@@ -92,6 +92,18 @@ defmodule TailwindFormatterTest do
     assert_formatter_output(input, expected)
   end
 
+  test "supports multiple inline elixir codes without spacing" do
+    input = ~S"""
+    <div class={"#{if false, do: "bg-white"} text-sm potato sm:lowercase #{isready?(@check)}#{some_dynamic_class(@check)} uppercase"}></div>
+    """
+
+    expected = ~S"""
+    <div class={"#{if false, do: "bg-white"} #{isready?(@check)}#{some_dynamic_class(@check)} potato text-sm uppercase sm:lowercase"}></div>
+    """
+
+    assert_formatter_output(input, expected)
+  end
+
   test "supports eex templating code" do
     input = ~S"""
     <%= live_redirect to: Routes.dashboard_path(@socket, :index),
@@ -316,13 +328,13 @@ defmodule TailwindFormatterTest do
     test "missing final quote" do
       input = ~S"""
       <a class={"#{if false, do: "bg-white"} text-sm potato sm:lowercase #{isready?(@check)} uppercase
-        id="testing 
+        id="testing
         href="#"></a>
       """
 
       expected = ~S"""
       <a class={"#{if false, do: "bg-white"} text-sm potato sm:lowercase #{isready?(@check)} uppercase
-        id="testing 
+        id="testing
         href="#"></a>
       """
 
@@ -374,13 +386,13 @@ defmodule TailwindFormatterTest do
     test "missing number tag inline elixir" do
       input = ~S"""
       <a class={"{if false, do: "bg-white"} text-sm potato sm:lowercase uppercase"}
-        id="testing 
+        id="testing
         href="#"></a>
       """
 
       expected = ~S"""
       <a class={"{if false, do: "bg-white"} text-sm potato sm:lowercase uppercase"}
-        id="testing 
+        id="testing
         href="#"></a>
       """
 

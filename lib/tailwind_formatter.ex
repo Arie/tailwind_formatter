@@ -142,7 +142,7 @@ defmodule TailwindFormatter do
   defp get_sort_position(class) do
     if placeholder?(class) do
       class
-      |> String.trim("$")
+      |> String.replace("$", "")
       |> String.to_integer()
       # offset to make sure fns are sorted to front
       |> then(fn position -> position - 1_000_000 end)
